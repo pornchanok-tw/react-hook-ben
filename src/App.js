@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useRef } from 'react';
+import { useForm } from './useForm';
+import { Hello } from './Hello';
 
-function App() {
+const App = () => {
+  const [values, handleChange] = useForm({ email: '', password: '', firstName: '' });
+
+  const inputRef = useRef();
+  const hello = useRef(() => console.log('hello  '));
+
+  const [showHello, setShowHello] = useState(true);
+
+  // useLayoutEffect(() => {
+  //   console.log(inputRef.current.getBoundingClientRect());
+  //   // return () => {
+  //   //   cleanup;
+  //   // };
+  // }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div>
+      <>
+        <button onClick={() => setShowHello(!showHello)}>toggles</button>
+        {showHello && <Hello />}
+        <input name="email" ref={inputRef} value={values.email} onChange={handleChange} />
+        <input name="firstName" value={values.firstName} onChange={handleChange} placeholder="firstName" />
+        <input type="password" name="password" value={values.password} onChange={handleChange} />
+        <button
+          onClick={() => {
+            inputRef.current.focus();
+            hello.current();
+          }}
         >
-          Learn React
-        </a>
-      </header>
+          focus
+        </button>
+      </>
     </div>
   );
-}
+};
 
 export default App;
